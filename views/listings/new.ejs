@@ -1,0 +1,45 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="row">
+  <div class="col-8 offset-2">
+  </br>
+    <h2> Create New Listing</h2>
+    <form method="post" action="/listings"  novalidate class="needs-validation" >
+        <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input name="listing[title]" placeholder="enter title" class="form-control" id="title" required/>
+            <div class="valid-feedback">Title looks good</div>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea name="listing[description]" placeholder="enter a catchy description" class="form-control" id="description"  required></textarea>
+             <div class="invalid-feedback">description required</div>
+        </div>
+        <div class="mb-3">
+            <label for="image" class="form-label">Image</label>
+            <input name="listing[image][url]" placeholder="insert URL" class="form-control" id="image" />
+            <div class="invalid-feedback">please insert a valid image/URL</div>
+        </div>
+        <div class="row">
+            <div class="mb-3 col-4">
+                <label for="price" class="form-label">Price</label>
+                <input name="listing[price]" placeholder="enter price" class="form-control"  id="price" required/>
+                <div class="invalid-feedback number">enter valid price</div>
+            </div>
+            <div class="mb-3 col-8">
+                <label for="country" class="form-label">Country</label>
+                <input name="listing[country]" placeholder="India" class="form-control" id="country" required/>
+                <div class="invalid-feedback">enter country</div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="loaction" class="form-label">location</label>
+            <input name="listing[location]" placeholder="Bengaluru,Karnataka" class="form-control" id="location" required/>
+            <div class="invalid-feedback">enter location</div>
+        </div>
+        </br>
+        <button class="btn btn-dark add-btn">Add</button>
+        </br></br>
+    </form>
+</div>
+</div>

@@ -6,15 +6,6 @@ const {isLoggedIn,isOwner,validateListing,} = require("../middleware");
 
 
 
-
-
-
-
-
-
-
-
-
 router.get("/",wrapAsync(async(req,res)=>{
     const allListings = await Listing.find({});
     res.render("./listings/index.ejs",{allListings});
@@ -27,9 +18,16 @@ router.get("/new",isLoggedIn,(req,res)=>{
 
 
 
-router.get("/:id",isLoggedIn,wrapAsync(async(req,res)=>{
+router.get("/:id",wrapAsync(async(req,res)=>{
      let{id} = req.params;
-     const listing = await Listing.findById(id).populate("reviews").populate("owner");
+    let listing = await Listing.findById(id)
+     .populate({
+         path: "review",
+         populate: {
+             path: "author",
+         }
+     })
+     .populate("owner");
      if(!listing){
         req.flash("error","Listing does not exist");
         res.redirect("/listings");

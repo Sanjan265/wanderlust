@@ -26,8 +26,8 @@ router.get("/:id",wrapAsync(async(req,res)=>{
          populate: {
              path: "author",
          }
-     })
-     .populate("owner");
+     }).populate("owner");
+     
      if(!listing){
         req.flash("error","Listing does not exist");
         res.redirect("/listings");

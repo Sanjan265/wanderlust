@@ -1,8 +1,5 @@
 const Listing = require("../models/listings");
-const { wrapAsync } = require("../utils/wrapAsync");
-const ExpressError = require("../utils/ExpressError");
-const { listingSchema } = require("../schema");
-const { saveRedirectUrl } = require("../middleware");
+
 
 module.exports.index = async (req, res) => {
     const allListings = await Listing.find({});
@@ -31,8 +28,11 @@ module.exports.showListing =  async(req,res)=>{
 }
 
 module.exports.createListing = async (req, res) => {
+    let url = req.file.path;
+    let filename = req.file.filename;
     const newlisting = new Listing(req.body.listing);
     newlisting.owner = req.user._id;
+    newlisting.image = {url,filename};
     await newlisting.save();
     req.flash("success","New listing created");
     res.redirect("/listings");
@@ -45,12 +45,21 @@ module.exports.editListing = async (req, res) => {
         req.flash("error","Listing does not exist");
         res.redirect("/listings");
      }
-    res.render("./listings/edit.ejs",{listing});
+     let originalImageUrl = listing.image.url;
+     originalImageUrl =  originalImageUrl.replace("/upload","/upload/w_250");
+     res.render("./listings/edit.ejs",{listing,originalImageUrl});
 }
 
 module.exports.updateListing = async (req, res) => {
         let{id} = req.params;
        const edit = await Listing.findByIdAndUpdate(id,{...req.body.listing});
+       if(typeof req.file !== "undefined"){
+        let url = req.file.path;
+        let filename = req.file.filename;
+        edit.image = {url,filename};
+        await edit.save();
+       }
+       
        req.flash("success"," listing edited");
        res.redirect(`/listings/${id}`);
  }
